@@ -1,0 +1,14 @@
+{% extends 'base.html.twig' %}
+
+
+
+{% block title %}{{ project.title }}{% endblock %}
+
+{% block body %}
+<h2>{{ project.title }}</h2>
+<ul>
+    <li>{{ project.description }}</li>
+    <li>{{ project.startAt | date("d-m-Y à H:i") }}</li>
+    <li>{{ project.endAt | date("d-m-Y à H:i") }}</li>    
+</ul>
+{% endblock %}

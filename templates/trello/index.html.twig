@@ -1,0 +1,42 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}HomePage{% endblock %}
+
+{% block body %}
+    <h1>Page d'accueil</h1>
+
+    <div class="example-wrapper">
+        {% if app.user %}
+            <ul>
+                <li><a class="nav-link" href="{{ path('user') }}">Profile</a></li>
+                <li><a class="nav-link" href="{{ path('app_logout') }}">Logout</a></li>
+            </ul>
+        
+
+        {% else %}
+            <ul>
+                <li><a class="nav-link" href="{{ path('app_login') }}">Login</a></li>
+                <li><a class="nav-link" href="{{ path('app_register') }}">Register</a></li>
+            </ul>
+            <h2>Tous les projets</h2>
+                <table style="width:80%">                   
+                    <tr>
+                        <th style="border: 1px solid black;"><strong>Nom de projet</strong></th>
+                        <th style="border: 1px solid black;"><strong>Description:</strong></th>
+                        <th style="border: 1px solid black;"><strong>Commencer le:</strong></th>                        
+                        <th style="border: 1px solid black;"><strong>A finir pour le:</strong></th>
+                    </tr>
+                    {% for project in projects %}
+                        <tr>
+                            <td style="border: 1px solid black;"><a href="{{ path('projectById', { id:project.id }) }}"></h2>{{ project.title }}</h2></a></td>
+                            <td style="border: 1px solid black;">{{ project.description }}</td>
+                            <td style="border: 1px solid black;">{{ project.startAt | date("d-m-Y à H:i") }}</td>
+                            <td style="border: 1px solid black;">{{ project.endAt | date("d-m-Y à H:i") }}</td>
+                        </tr>
+                    {% endfor %}
+                </table>
+
+                    {{ knp_pagination_render(projects) }}
+                {% endif %}
+    </div>
+{% endblock %}

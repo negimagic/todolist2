@@ -1,0 +1,41 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello UserController!{% endblock %}
+
+
+{% block body %}
+
+{% if app.user %}
+        <div class="mb-3">
+            You are logged in as {{ app.user.username }}, <a href="{{ path('app_logout') }}">Logout</a>
+        </div>
+
+        <h1>Bienvenue {{ app.user.firstName }} !</h1>
+
+        <a href="{{ path('add_project') }}">Ajouter un projet</a>
+
+        <h2>Vos projets</h2>
+        <div class="exemple-wrapper">
+            <table style="width:80%">                   
+                <tr>
+                    <th style="border: 1px solid black;"><strong>Nom de projet</strong></th>
+                    <th style="border: 1px solid black;"><strong>Description:</strong></th>
+                    <th style="border: 1px solid black;"><strong>Commencer le:</strong></th>                        
+                    <th style="border: 1px solid black;"><strong>A finir pour le:</strong></th>
+                    <th style="border: 1px solid black;"><strong>Modifier</strong></th>
+                </tr>
+                {% for project in app.user.projects %}
+                    <tr>
+                        <td style="border: 1px solid black;"><a href="{{ path('projectById', { id:project.id }) }}"></h2>{{ project.title }}</h2></a></td>
+                        <td style="border: 1px solid black;">{{ project.description }}</td>
+                        <td style="border: 1px solid black;">{{ project.startAt | date("d-m-Y à H:i") }}</td>
+                        <td style="border: 1px solid black;">{{ project.endAt | date("d-m-Y à H:i") }}</td>
+                        <td style="border: 1px solid black;"><a href="{{ path('upd_project', { id:project.id }) }}">Modifier</a></td>
+                    </tr>
+                {% endfor %}
+            </table>
+          </div>
+{% endif %}
+
+{% endblock %}
+

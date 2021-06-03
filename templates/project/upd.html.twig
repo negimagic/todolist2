@@ -1,0 +1,17 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Modifier un projet{% endblock %}
+
+{% block body %}
+
+<h1>Modifier un projet</h1>
+
+{{ form_start(UpdateForm) }}
+        {{ form_row(UpdateForm.title) }}
+        {{ form_row(UpdateForm.description) }}
+        {{ form_row(UpdateForm.status) }}
+        {{ form_row(UpdateForm.end_at) }}
+        {{ form_row(UpdateForm.user_id) }}
+        <button type="submit" class="btn">Modifier</button>
+    {{ form_end(UpdateForm) }}
+{% endblock %}
