@@ -3,35 +3,73 @@
 {% block title %}HomePage{% endblock %}
 
 {% block body %}
-    <h1>Page d'accueil</h1>
+
+<h1 class="text-center">Page d'accueil</h1>
 
     <div class="example-wrapper">
         {% if app.user %}
-            <ul>
-                <li><a class="nav-link" href="{{ path('user') }}">Profile</a></li>
-                <li><a class="nav-link" href="{{ path('app_logout') }}">Logout</a></li>
-            </ul>
-        
-
-        {% else %}
-            <ul>
-                <li><a class="nav-link" href="{{ path('app_login') }}">Login</a></li>
-                <li><a class="nav-link" href="{{ path('app_register') }}">Register</a></li>
-            </ul>
-            <h2>Tous les projets</h2>
-                <table style="width:80%">                   
+        <nav class="navbar navbar-expand-lg navbar-light">
+            <div>
+                <div class="collapse navbar-collapse">
+                    <ul class="navbar-nav ml-auto">
+                        <li><a class="nav-link" href="{{ path('user') }}">Profile</a></li>
+                        <li><a class="nav-link" href="{{ path('app_logout') }}">Logout</a></li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+        <h2>Tous les projets:</h2>
+                <table class="table">                   
                     <tr>
-                        <th style="border: 1px solid black;"><strong>Nom de projet</strong></th>
-                        <th style="border: 1px solid black;"><strong>Description:</strong></th>
-                        <th style="border: 1px solid black;"><strong>Commencer le:</strong></th>                        
-                        <th style="border: 1px solid black;"><strong>A finir pour le:</strong></th>
+                        <th><strong>Nom de projet</strong></th>
+                        <th><strong>Description:</strong></th>
+                        <th><strong>Commencer le:</strong></th>                        
+                        <th><strong>A finir pour le:</strong></th>
                     </tr>
                     {% for project in projects %}
                         <tr>
-                            <td style="border: 1px solid black;"><a href="{{ path('projectById', { id:project.id }) }}"></h2>{{ project.title }}</h2></a></td>
-                            <td style="border: 1px solid black;">{{ project.description }}</td>
-                            <td style="border: 1px solid black;">{{ project.startAt | date("d-m-Y à H:i") }}</td>
-                            <td style="border: 1px solid black;">{{ project.endAt | date("d-m-Y à H:i") }}</td>
+                            <td><a class="btn" href="{{ path('projectById', { id:project.id }) }}"></h2>{{ project.title }}</h2></a></td>
+                            <td>{{ project.description }}</td>
+                            <td>{{ project.startAt | date("d-m-Y à H:i") }}</td>
+                            {% if project.endAt %}
+                                <td>{{ project.endAt | date("d-m-Y à H:i") }}</td>
+                            {% else %}
+                                <td></td>
+                            {% endif %}
+                        </tr>
+                    {% endfor %}
+                </table>
+
+                    {{ knp_pagination_render(projects) }}
+        {% else %}
+        <nav class="navbar navbar-expand-lg navbar-light">
+            <div class="exemple-wrapper">
+                <div class="collapse navbar-collapse">
+                    <ul class="navbar-nav ml-auto">
+                        <li><a class="nav-link" href="{{ path('app_login') }}">Login</a></li>
+                        <li><a class="nav-link" href="{{ path('app_register') }}">Register</a></li>                       
+                    </ul>
+                </div>
+            </div>
+        </nav>
+            <h2>Tous les projets:</h2>
+                <table class="table">                   
+                    <tr>
+                        <th><strong>Nom de projet</strong></th>
+                        <th><strong>Description:</strong></th>
+                        <th><strong>Commencer le:</strong></th>                        
+                        <th><strong>A finir pour le:</strong></th>
+                    </tr>
+                    {% for project in projects %}
+                        <tr>
+                            <td><a class="btn" href="{{ path('projectById', { id:project.id }) }}"></h2>{{ project.title }}</h2></a></td>
+                            <td>{{ project.description }}</td>
+                            <td>{{ project.startAt | date("d-m-Y à H:i") }}</td>
+                            {% if project.endAt %}
+                                <td>{{ project.endAt | date("d-m-Y à H:i") }}</td>
+                            {% else %}
+                                <td></td>
+                            {% endif %}
                         </tr>
                     {% endfor %}
                 </table>

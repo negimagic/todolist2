@@ -91,23 +91,25 @@ class ProjectController extends AbstractController
     }
 
     /**
-     * @Route("/project/delete", name="del_project")
+     * @Route("/project/delete/{id}", name="del_project")
      */
-    public function deleteProject(): Response
+    public function deleteProject(Project $project): Response
     {
-        return $this->render('project/del.html.twig', [
-            'controller_name' => 'ProjectController',
-        ]);
+
+        $manager = $this->getDoctrine()->getManager();
+        $manager->remove($project);
+        $manager->flush();
+
+        return $this->redirectToRoute('user');
     }
 
     /**
      * @Route("/project/update/{id}", name="upd_project")
      */
-    public function updateProject(Request $request, UserRepository $userRepository, Project $project): Response
+    public function updateProject(Request $request, Project $project): Response
     {
         $form = $this->createForm(UpdateProjectType::class, $project);
         $form->handleRequest($request);
-        $users = $userRepository->findAll();
 
         if ($form->isSubmitted() && $form->isValid()) {
             $project->setTitle(
@@ -137,6 +139,10 @@ class ProjectController extends AbstractController
             'project' => $project,
             'UpdateForm' => $form->createView()
         ]);
+    }
+
+    public function fectchUsers(UserRepository $userRepository){
+        $users = $userRepository->findAll();
     }
 
 

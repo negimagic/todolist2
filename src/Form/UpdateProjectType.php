@@ -16,7 +16,6 @@ class UpdateProjectType extends AbstractType
             ->add('description')
             ->add('status')
             ->add('end_at')
-            ->add('user_id')
         ;
     }
 
