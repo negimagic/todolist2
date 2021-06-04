@@ -1,0 +1,31 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+  Add new members to the project
+{% endblock %}
+
+{% block body %}
+<h1 class="text-center">Ajouter un membre à voter projet</h1>
+<form action="{{ path('add_users_save', { id : project.id }) }}" method ="POST" data-controller="user-search" data-user-search-url-value="{{ path('search_users') }}">   
+    <input type="submit" value="Ajouter les membres sélectionnés" class="btn btn-success">
+    <input class="border-0 col p-1" name="search" value="" data-user-search-target="search" placeholder="Rechercher un membre" type="text" data-action="input->user-search#search">
+    <span class="col" data-user-search-target="liste"></span>
+    <div class="w-auto border p-1" data-user-search-target="result"></div>
+    <select multiple name="members[]" class="visually-hidden" data-user-search-target="select"></select>
+</form>
+
+<div class="text-center">
+    <h2>Les membres du projet:</h2>
+    {% if project.userId | length > 0 %}
+      <ul class="list-group">
+        {% for member in project.userId %}
+          <li class="list-group-item">{{ member.firstname }}
+            {{ member.lastname }}
+            {{ member.email }}</li>
+        {% endfor %}
+      </ul>
+    {% else %}
+      <p>Aucun membre</p>
+    {% endif %}
+</div>
+{% endblock %}

@@ -49,8 +49,23 @@
   </div> 
   {% if app.user is same as project.user %}
   <div class="container">
+    <a class="btn btn-primary" href="{{ path('add_users', { id:project.id }) }}">Ajouter un membre</a>
     <a class="btn btn-success" href="{{ path('upd_project', { id:project.id }) }}">Modifer</a>
     <a class="btn btn-danger" href="{{ path('del_project', { id:project.id }) }}">Supprimer</a>
   </div>
   {% endif %}
+  <div class="text-center">
+    <h2>Les membres du projet:</h2>
+    {% if project.userId | length > 0 %}
+      <ul class="list-group">
+        {% for member in project.userId %}
+          <li class="list-group-item">{{ member.firstname }}
+            {{ member.lastname }}
+            {{ member.email }}</li>
+        {% endfor %}
+      </ul>
+    {% else %}
+      <p>Aucun membre</p>
+    {% endif %}
+</div>
 {% endblock %}

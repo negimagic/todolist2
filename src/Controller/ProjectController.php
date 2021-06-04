@@ -7,6 +7,7 @@ use App\Form\ProjectType;
 use App\Form\UpdateProjectType;
 use App\Repository\UserRepository;
 use App\Repository\ProjectRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -145,6 +146,53 @@ class ProjectController extends AbstractController
         $users = $userRepository->findAll();
     }
 
+    /**
+     * @Route("/project/{id}/addUser", name="add_users")
+     */
+    public function addUser(Project $project) {
+        return $this->render('project/addMember.html.twig', [
+            'controller_name' => 'ProjectController',
+            'project' => $project,
+        ]);
+    }
+
+    /**
+     * @Route("/users/{search}", name="search_users", methods={"GET"})
+     */
+    public function userList(UserRepository $userRepository, $search = null, Request $request): Response
+    {
+        if ($request->get('xhr')) {
+            $users = [];
+
+            if (!empty($search) && strlen($search) > 2) {
+                $users = $userRepository->findByNameEmail($search);
+            }
+
+            return $this->render('project/_searchMember.html.twig', [
+                'users' => $users
+            ]);
+        }
+
+        return $this->redirectToRoute('user');
+    }
+
+    /**
+     * @Route("/{id}/addUser/save", name="add_users_save", methods={"POST"})
+     */
+    public function addUserSave(Project $project, Request $request, UserRepository $userRepository, EntityManagerInterface $entityManagerInterface): Response
+    {
+        $members = $request->get('members');
+        if(!empty($members)) {
+            foreach($members as $memberId){
+                $member = $userRepository->find($memberId);
+                $project->addUserId($member);
+                $entityManagerInterface->persist($project);
+            }
+
+            $entityManagerInterface->flush();
+        }
+        return $this->redirectToRoute('user');
+    }
 
 
 }
